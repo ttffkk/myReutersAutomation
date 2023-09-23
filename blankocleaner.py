@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import os
 
-# Function to remove whitespaces and special characters
+# Function to remove special characters and whitespace
 def remove_special_characters(text):
     return ''.join(e for e in text if e.isalnum())
 
@@ -24,7 +24,7 @@ if response.status_code == 200:
         # Get the text inside the h1 tag
         h1_text = h1_tag.get_text()
 
-        # Remove whitespaces and special characters from h1 text
+        # Remove special characters and whitespace from h1 text
         h1_cleaned = remove_special_characters(h1_text)
 
         # Create a directory for storing the files if it doesn't exist
@@ -37,18 +37,16 @@ if response.status_code == 200:
         # Find all paragraph tags
         paragraphs = soup.find_all('p')
 
-        # Check if the first paragraph contains a picture description
-        if paragraphs and paragraphs[0].text.startswith("[1/"):
-            # Exclude the first paragraph
-            paragraphs = paragraphs[1:]
+        # Check if any <p> tag contains "Acquire Licensing Rights" and exclude it
+        paragraphs = [p for p in paragraphs if "Acquire Licensing Rights" not in p.get_text()]
 
         # Combine the h1 text and paragraphs into one string
         content = h1_text + '\n\n'
         for paragraph in paragraphs:
             content += paragraph.get_text() + '\n\n'
 
-        # Remove content after "Reporting by"
-        index = content.find("Reporting by")
+        # Remove content after "Reporting"
+        index = content.find("Reporting")
         if index != -1:
             content = content[:index]
 
