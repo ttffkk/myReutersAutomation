@@ -1,1 +1,0 @@
-aws polly start-speech-synthesis-task --engine standard --language-code en-US --output-format mp3 --output-s3-bucket-name reuters-mp3-readout --output-s3-key-prefix  --text-type text --voice-id Joanna
