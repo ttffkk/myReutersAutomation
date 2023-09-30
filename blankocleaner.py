@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import os
 import subprocess
+import logging
 
 # Function to remove special characters and whitespace
 def remove_special_characters(text):
@@ -58,13 +59,17 @@ def process_url(url):
             subprocess.run(["python", "Delivery.py", h1_cleaned, filename])
         else:
             print("No h1 tag found on the page.")
+            logging.debug('No H1 Tag could be found on '+ url)
     else:
         print(f"Failed to retrieve the web page at URL: {url}")
+        logging.debug('Failed to retrieve the web page at URL: '+ url)
+
 
 # Read URLs from a file (e.g., urls.txt)
 with open("urls.txt", "r") as url_file:
     urls = url_file.read().splitlines()
 
+logging.basicConfig(filename='app.log', filemode='w',format='%(name)s - %(levelname)s - %(message)s')
 # Process each URL
 for url in urls:
     process_url(url)

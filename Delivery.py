@@ -1,6 +1,9 @@
 import subprocess
 import sys
 import os
+import logging
+
+logging.basicConfig(filename='´Delivery.log', filemode='w',format='%(name)s - %(levelname)s - %(message)s')
 
 # Check if the correct number of arguments are provided
 if len(sys.argv) != 3:
@@ -42,7 +45,9 @@ result = subprocess.run(aws_command, stdout=subprocess.PIPE, stderr=subprocess.P
 
 # Print the output and errors, if any.
 print("Output:")
-print(result.stdout.decode('utf-8'))  # Decode the output as UTF-8
+john=result.stdout.decode('utf-8')
+logging.info(john)
+  # Decode the output as UTF-8
 
 print("Errors:")
-print(result.stderr.decode('utf-8'))  # Decode the error messages as UTF-8
+logging.warning(result.stderr.decode('utf-8')) # Decode the error messages as UTF-8
