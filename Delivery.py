@@ -50,4 +50,4 @@ logging.info(john)
   # Decode the output as UTF-8
 
 print("Errors:")
-logging.warning(result.stderr.decode('utf-8')) # Decode the error messages as UTF-8
+logging.warning(filename) # Decode the error messages as UTF-8
