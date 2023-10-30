@@ -33,7 +33,7 @@ def process_url(url):
                 os.makedirs("output")
 
             # Create a file with the h1 tag as the filename
-            filename = os.path.join("output", f"{h1_cleaned}.txt")
+            filename = os.path.join("output", f"{h1_cleaned}.log")
 
             # Find all paragraph tags
             paragraphs = soup.find_all('p')

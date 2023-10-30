@@ -3,11 +3,12 @@ import sys
 import os
 import logging
 
-logging.basicConfig(filename='´Delivery.log', filemode='w',format='%(name)s - %(levelname)s - %(message)s')
+# Configure logging with a more informative format
+logging.basicConfig(filename='Delivery.log', filemode='w', format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO)
 
-# Check if the correct number of arguments are provided
+# Check if the correct number of arguments is provided
 if len(sys.argv) != 3:
-    print("Usage: python Delivery.py h1_cleaned filename")
+    logging.error("Usage: python Delivery.py h1_cleaned filename")
     sys.exit(1)
 
 # Get the arguments
@@ -43,11 +44,9 @@ aws_command = [
 # Run the command in CMD.
 result = subprocess.run(aws_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-# Print the output and errors, if any.
-print("Output:")
-john=result.stdout.decode('utf-8')
-logging.info(john)
-  # Decode the output as UTF-8
+# Log the output and errors, if any.
+logging.info("AWS Command Output:")
+logging.info(result.stdout.decode('utf-8'))
 
-print("Errors:")
-logging.warning(filename) # Decode the error messages as UTF-8
+logging.warning("AWS Command Error Messages:")
+logging.warning(result.stderr.decode('utf-8'))
