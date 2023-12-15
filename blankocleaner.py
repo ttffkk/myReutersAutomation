@@ -4,14 +4,22 @@ import os
 import subprocess
 import logging
 
+
 # Function to remove special characters and whitespace
 def remove_special_characters(text):
     return ''.join(e for e in text if e.isalnum())
 
+
 # Function to process a single URL
-def process_url(url):
+def process_url(uri):
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
+                      'Chrome/96.0.4664.45 Safari/537.36',
+        'Referer': 'https://www.google.com/'
+    }
+
     # Send a GET request to the URL
-    response = requests.get(url)
+    response = requests.get(uri, headers=headers)
 
     # Check if the request was successful
     if response.status_code == 200:
@@ -59,17 +67,23 @@ def process_url(url):
             subprocess.run(["python", "Delivery.py", h1_cleaned, filename])
         else:
             print("No h1 tag found on the page.")
-            logging.debug('No H1 Tag could be found on '+ url)
+            logging.debug('No H1 Tag could be found on ' + uri)
     else:
-        print(f"Failed to retrieve the web page at URL: {url}")
-        logging.debug('Failed to retrieve the web page at URL: '+ url)
+        logging.debug('Error code ' + str(response.status_code) + " " + uri)
+        print(f"Failed to retrieve the web page at URL: {uri}" + f" Error code {response.status_code}")
+        logging.debug('Failed to retrieve the web page at URL: ' + uri)
 
 
 # Read URLs from a file (e.g., urls.txt)
 with open("urls.txt", "r") as url_file:
     urls = url_file.read().splitlines()
 
-logging.basicConfig(filename='app.log', filemode='w',format='%(name)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename='app.tods', filemode='a', format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                    level=logging.DEBUG)
 # Process each URL
 for url in urls:
     process_url(url)
+
+z = False
+while not z:
+    z = bool(input("Can you confirm you read the logs"))
